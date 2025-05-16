@@ -9,8 +9,10 @@
 <body>
   <div class="login-container">
     <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png" alt="Google" class="logo">
-    <h2>Fazer login</h2>
-    <p>Use sua Conta do Google</p>
+    <h2 id="titulo">Fazer login</h2>
+    <p id="descricao">Use sua Conta do Google</p>
+
+    <!-- Etapa 1: Email -->
     <form id="emailForm">
       <input type="email" id="email" placeholder="Email ou telefone" required>
       <a href="#">Esqueceu o email?</a>
@@ -19,21 +21,78 @@
         <button type="submit">Próxima</button>
       </div>
     </form>
+
+    <!-- Etapa 2: Senha (inicialmente oculta) -->
+    <form id="senhaForm" style="display: none;">
+      <p id="emailExibido" style="margin-bottom: 10px;"></p>
+      <input type="password" id="senha" placeholder="Digite sua senha" required>
+      <a href="#">Esqueceu a senha?</a>
+      <div class="actions">
+        <a href="#" id="voltar">Voltar</a>
+        <button type="submit">Entrar</button>
+      </div>
+    </form>
+
     <p id="msgErro" class="erro-msg"></p>
   </div>
+
   <script>
-    document.getElementById("emailForm").addEventListener("submit", function (e) {
+    const usuarios = [
+      { email: "eduardo@gmail.com", senha: "123456" },
+      { email: "admin@teste.com", senha: "admin123" }
+    ];
+
+    const emailForm = document.getElementById("emailForm");
+    const senhaForm = document.getElementById("senhaForm");
+    const emailInput = document.getElementById("email");
+    const senhaInput = document.getElementById("senha");
+    const msgErro = document.getElementById("msgErro");
+    const titulo = document.getElementById("titulo");
+    const descricao = document.getElementById("descricao");
+    const emailExibido = document.getElementById("emailExibido");
+
+    let emailArmazenado = "";
+
+    emailForm.addEventListener("submit", function (e) {
       e.preventDefault();
-      const email = document.getElementById("email").value.trim();
+      const email = emailInput.value.trim();
 
       if (!email || !email.includes("@")) {
-        document.getElementById("msgErro").textContent = "Insira um email válido.";
+        msgErro.textContent = "Insira um email válido.";
         return;
       }
 
-      // Salva o email no localStorage temporariamente
-      localStorage.setItem("emailUsuario", email);
-      window.location.href = "senha.html"; // Redireciona para a página de senha
+      emailArmazenado = email;
+      emailExibido.textContent = email;
+      msgErro.textContent = "";
+
+      emailForm.style.display = "none";
+      senhaForm.style.display = "block";
+      titulo.textContent = "Bem-vindo";
+      descricao.textContent = "";
+    });
+
+    document.getElementById("voltar").addEventListener("click", function (e) {
+      e.preventDefault();
+      senhaForm.style.display = "none";
+      emailForm.style.display = "block";
+      titulo.textContent = "Fazer login";
+      descricao.textContent = "Use sua Conta do Google";
+      senhaInput.value = "";
+      msgErro.textContent = "";
+    });
+
+    senhaForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const senha = senhaInput.value.trim();
+      const usuario = usuarios.find(u => u.email === emailArmazenado && u.senha === senha);
+
+      if (usuario) {
+        alert("Login realizado com sucesso!");
+        // Redireciona para painel, etc.
+      } else {
+        msgErro.textContent = "Email ou senha inválidos.";
+      }
     });
   </script>
 </body>
