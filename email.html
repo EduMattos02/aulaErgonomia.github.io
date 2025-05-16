@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Login - Google</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="login-container">
+    <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png" alt="Google" class="logo">
+    <h2>Fazer login</h2>
+    <p>Use sua Conta do Google</p>
+    <form id="emailForm">
+      <input type="email" id="email" placeholder="Email ou telefone" required>
+      <a href="#">Esqueceu o email?</a>
+      <div class="actions">
+        <a href="#">Criar conta</a>
+        <button type="submit">Próxima</button>
+      </div>
+    </form>
+    <p id="msgErro" class="erro-msg"></p>
+  </div>
+  <script>
+    document.getElementById("emailForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const email = document.getElementById("email").value.trim();
+
+      if (!email || !email.includes("@")) {
+        document.getElementById("msgErro").textContent = "Insira um email válido.";
+        return;
+      }
+
+      // Salva o email no localStorage temporariamente
+      localStorage.setItem("emailUsuario", email);
+      window.location.href = "senha.html"; // Redireciona para a página de senha
+    });
+  </script>
+</body>
+</html>

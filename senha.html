@@ -1,0 +1,23 @@
+<script src="usuarios.js"></script>
+<script>
+  const email = localStorage.getItem("emailUsuario");
+  if (!email) window.location.href = "email.html";
+
+  document.getElementById("emailExibido").textContent = email;
+
+  document.getElementById("senhaForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    const senha = document.getElementById("senha").value.trim();
+    const msgErro = document.getElementById("msgErro");
+
+    const usuario = usuarios.find(u => u.email === email && u.senha === senha);
+
+    if (usuario) {
+      alert("Login válido!");
+      // Redireciona para página protegida
+      // window.location.href = "painel.html";
+    } else {
+      msgErro.textContent = "Email ou senha inválidos.";
+    }
+  });
+</script>
